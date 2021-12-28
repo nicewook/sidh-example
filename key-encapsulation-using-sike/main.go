@@ -16,17 +16,7 @@ import (
 
 func main() {
 
-	// 1. Preperation
-	// Client generates key pair
-	privClient := sidh.NewPrivateKey(sidh.Fp503, sidh.KeyVariantSike)
-	pubClient := sidh.NewPublicKey(sidh.Fp503, sidh.KeyVariantSike)
-
-	if err := privClient.Generate(rand.Reader); err != nil {
-		log.Fatal(err)
-	}
-	privClient.GeneratePublicKey(pubClient)
-
-	// Server generates key pair
+	// Server generates key pair.
 	privServer := sidh.NewPrivateKey(sidh.Fp503, sidh.KeyVariantSike)
 	pubServer := sidh.NewPublicKey(sidh.Fp503, sidh.KeyVariantSike)
 
@@ -35,8 +25,9 @@ func main() {
 	}
 	privServer.GeneratePublicKey(pubServer)
 
-	// Now, let's say, Client gets server's public key
-	// 2. Client generate "shared secret" and encapsulate "cipher text" from server's public key with client's private key
+	// Assume server sends its public key to client.
+	// Client generates "shared secret" and encapsulate "cipher text"
+	// from server's public key with client's private key
 	kemClient := sidh.NewSike503(rand.Reader)
 	cipherText := make([]byte, kemClient.CiphertextSize())
 	clientSS := make([]byte, kemClient.SharedSecretSize())
@@ -45,9 +36,9 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// Now, Client has "shared secret", and let's say clients sends only "cipher text" to the server
-	// MITM, has nothing to do with "cipher text"
-	// 3. Server can decapsulate "shared secret" from the "cipher text" with its private key and public key
+	// Now, Client has "shared secret"
+	// Assume client sends only "cipher text" to the server(MITM, has nothing to do with "cipher text")
+	// Server can decapsulate "shared secret" from the "cipher text" with its private key and public key
 	kemServer := sidh.NewSike503(rand.Reader)
 	serverSS := make([]byte, kemServer.SharedSecretSize())
 	if err := kemServer.Decapsulate(serverSS, privServer, pubServer, cipherText); err != nil {
@@ -55,7 +46,7 @@ func main() {
 	}
 
 	// Let's check if server and client have the same secret key
-	fmt.Printf("part of secret key of client: %x\n", clientSS[:len(clientSS)/10])
-	fmt.Printf("part of secret key of server: %x\n", serverSS[:len(serverSS)/10])
+	fmt.Printf("secret key of client: %x\n", clientSS)
+	fmt.Printf("secret key of server: %x\n", serverSS)
 	fmt.Printf("server and client have the same secret key: %t\n", bytes.Equal(serverSS, clientSS))
 }

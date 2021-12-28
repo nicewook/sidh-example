@@ -13,7 +13,7 @@ import (
 
 func main() {
 
-	// Client generates key pair
+	// Client generates key pair - KeyVariationA
 	privClient := sidh.NewPrivateKey(sidh.Fp503, sidh.KeyVariantSidhA)
 	pubClient := sidh.NewPublicKey(sidh.Fp503, sidh.KeyVariantSidhA)
 
@@ -22,7 +22,7 @@ func main() {
 	}
 	privClient.GeneratePublicKey(pubClient)
 
-	// Server generates key pair
+	// Server generates key pair - KeyVariationB
 	privServer := sidh.NewPrivateKey(sidh.Fp503, sidh.KeyVariantSidhB)
 	pubServer := sidh.NewPublicKey(sidh.Fp503, sidh.KeyVariantSidhB)
 
@@ -43,7 +43,7 @@ func main() {
 	privServer.DeriveSecret(serverSS, pubClient)
 
 	// Let's check if server and client have the same secret key
-	fmt.Printf("part of secret key of client: %x\n", clientSS[:len(clientSS)/10])
-	fmt.Printf("part of secret key of server: %x\n", serverSS[:len(serverSS)/10])
+	fmt.Printf("secret key of client: %x\n", clientSS)
+	fmt.Printf("secret key of server: %x\n", serverSS)
 	fmt.Printf("server and client have the same secret key: %t\n", bytes.Equal(serverSS, clientSS))
 }
