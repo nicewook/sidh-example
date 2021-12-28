@@ -32,11 +32,13 @@ let's see how we can share the key with `SIDH` and `SIKE` using [sidh package](h
 
 Supersingular Isogeny Key Exchange(SIDH): https://www.wikiwand.com/en/Supersingular_isogeny_key_exchange
 ```
-Supersingular isogeny Diffie-Hellman key exchange(SIDH) is a post-quantum cryptographic algorithm used to establish a secret key between two parties over an otherwise insecure communications channel
+Supersingular isogeny Diffie-Hellman key exchange(SIDH) is a post-quantum cryptographic algorithm 
+used to establish a secret key between two parties over an otherwise insecure communications channel
 ```
 
 
 Supersingular Isogeny Key Encapsulation(SIKE): https://sike.org/
 ```
-SIKE is an isogeny-based key encapsulation suite based on pseudo-random walks in supersingular isogeny graphs, that was submitted to the NIST standardization process on post-quantum cryptography. 
+SIKE is an isogeny-based key encapsulation suite based on pseudo-random walks in supersingular
+isogeny graphs, that was submitted to the NIST standardization process on post-quantum cryptography. 
 ```
